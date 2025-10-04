@@ -54,3 +54,12 @@ func Test_radixSortPackages(t *testing.T) {
 		})
 	}
 }
+
+func Benchmark_radixSortPackages(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		b.StopTimer()
+		packages, _ := parseInput("network packets data.csv") // tfw hardcoded path, idc
+		b.StartTimer()
+		radixSortPackages(packages)
+	}
+}
