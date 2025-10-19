@@ -188,7 +188,7 @@ func makeRange(min, max int) []int {
 
 // Benchmark comparison
 func BenchmarkSearchComparison(b *testing.B) {
-	sizes := []int{100, 1000, 10000}
+	sizes := []int{100, 1000, 10000, 10000000}
 
 	for _, size := range sizes {
 		arr := makeRange(1, size)
