@@ -16,10 +16,14 @@ type FamilyBST struct {
 	Root *FamilyNode
 }
 
+// NewFamilyNode creates and returns a pointer to a new FamilyNode with the specified key and worth.
+// Why? Cus im lazy (also safer code yay we love that)
 func NewFamilyNode(key string, worth int) *FamilyNode {
 	return &FamilyNode{Key: key, Worth: worth}
 }
 
+// Insert adds a new FamilyNode to the FamilyBST. Keeps the BST property thing intact.
+// Also updates the CumulativeWorth and Size properties along the insertion path.
 func (t *FamilyBST) Insert(node *FamilyNode) {
 	var y *FamilyNode = nil
 	x := t.Root
@@ -54,6 +58,8 @@ func (t *FamilyBST) Insert(node *FamilyNode) {
 	}
 }
 
+// Min returns the node with the minimum worth in the subtree rooted at the provided node.
+// Use t.Root as the node if you want overall min
 func (t *FamilyBST) Min(x *FamilyNode) *FamilyNode {
 	for x.Left != nil {
 		x = x.Left
@@ -61,6 +67,8 @@ func (t *FamilyBST) Min(x *FamilyNode) *FamilyNode {
 	return x
 }
 
+// Max returns the node with the maximum worth in the subtree rooted at the provided node.
+// Use t.Root as the node if you want overall max
 func (t *FamilyBST) Max(x *FamilyNode) *FamilyNode {
 	for x.Right != nil {
 		x = x.Right
@@ -68,6 +76,9 @@ func (t *FamilyBST) Max(x *FamilyNode) *FamilyNode {
 	return x
 }
 
+// Rank calculates the rank of the given node in the tree based on its worth.
+// Lower rank = higher worth
+// Returns an integer representing the rank or an error if the node is not found.
 func (t *FamilyBST) Rank(node *FamilyNode) (int, error) {
 	rank := 0
 	current := t.Root
@@ -96,6 +107,10 @@ func (t *FamilyBST) Rank(node *FamilyNode) (int, error) {
 	return -1, fmt.Errorf("node with this key could not be found")
 }
 
+// transplant replaces the subtree rooted at node `u` with the subtree rooted at node `v` in the binary search tree.
+// it updates parent-child relationships to maintain the tree structure.
+// go look in the book or something for better explanation.
+// this is a helper function used for Delete, idk why u would want to use this by itself
 func (t *FamilyBST) transplant(u, v *FamilyNode) {
 	if u.Parent == nil {
 		t.Root = v
@@ -110,6 +125,7 @@ func (t *FamilyBST) transplant(u, v *FamilyNode) {
 	}
 }
 
+// Delete kills the`z` node while maintaining the BST property stuff
 func (t *FamilyBST) Delete(z *FamilyNode) {
 	if z.Left == nil {
 		t.transplant(z, z.Right)
@@ -129,11 +145,12 @@ func (t *FamilyBST) Delete(z *FamilyNode) {
 	}
 }
 
-func (t *FamilyBST) PreOrder(node *FamilyNode) {
+// Traverse is just used for testing, it prints out shit i guess
+func (t *FamilyBST) Traverse(node *FamilyNode) {
 	if node != nil {
+		t.Traverse(node.Left)
 		fmt.Println("\nKey:", node.Key, "\nWorth:", node.Worth, "\nC:", node.CumulativeWorth)
-		t.PreOrder(node.Left)
-		t.PreOrder(node.Right)
+		t.Traverse(node.Right)
 	}
 }
 
