@@ -125,7 +125,7 @@ func (t *FamilyBST) transplant(u, v *FamilyNode) {
 	}
 }
 
-// Delete kills the`z` node while maintaining the BST property stuff
+// Delete kills the `z` node while maintaining the BST property stuff
 func (t *FamilyBST) Delete(z *FamilyNode) {
 	if z.Left == nil {
 		t.transplant(z, z.Right)
